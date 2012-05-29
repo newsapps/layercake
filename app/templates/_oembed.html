@@ -1,0 +1,11 @@
+{% extends "_content_item.html" %}
+{% block update_specifics %}
+<div class="oembed" data-url="{{ oembed_url }}">
+    {{ oembed_url|embedly }}
+</div>
+{% if body %}
+<div class="update">
+    {{ body|safe }}
+</div>
+{% endif %}
+{% endblock update_specifics %}

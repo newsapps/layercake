@@ -1,0 +1,37 @@
+<VirtualHost *:80>
+ServerName layercake.beta.tribapps.com
+ServerAlias www.layercake.beta.tribapps.com
+ 
+    <Location />
+       Order Deny,Allow
+       Allow from all
+    </Location>
+
+    <Directory  /home/newsapps/sites/gallery/repository/app>
+        Order allow,deny
+        Allow from 163.192.0.0/16
+        Allow from 163.193.0.0/16
+        Allow from 163.194.0.0/16
+    </Directory>
+    
+    Redirect permanent /favicon.ico http://media-beta.tribapps.com/favicon.ico
+    
+    Alias /robots.txt /home/newsapps/sites/schools/repository/schools/assets/robots.txt
+    
+    ErrorLog /home/newsapps/logs/layercake.error.log
+    LogLevel warn
+
+    CustomLog /home/newsapps/logs/layercake.access.log combined
+    
+    ServerSignature Off
+    
+    RewriteEngine on
+    # canonical hostname
+    RewriteCond %{HTTP_HOST} ^www.layercake.beta.tribapps.com [NC] 
+    RewriteRule ^/(.*)  http://layercake.beta.tribapps.com/$1 [L,R]
+    
+    DocumentRoot /home/newsapps/sites/layercake/repository/assets/templates/
+    
+    RewriteCond %{REQUEST_URI} !/maintenance.html$ 
+    RewriteRule $ /maintenance.html [R=302,L]
+</VirtualHost>

@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block creamyfilling %}
+<h1>Environ!</h1>
+{% for k,v in environ.items() %}
+<b>{{ k }}</b> => {{ v }}<br>
+{% endfor %}
+{% endblock creamyfilling %}

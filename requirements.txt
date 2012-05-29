@@ -1,0 +1,17 @@
+Fabric==0.9.3
+Flask==0.8
+-e git+https://github.com/swanson/flask-embedly.git@4f3c56eb299f42d4f6a158980359d722fe549e7f#egg=Flask_Embedly-0.1-py2.6-dev
+Jinja2==2.6
+Markdown==2.1.1
+Werkzeug==0.8.3
+boto==2.3.0
+certifi==0.0.8
+chardet==1.0.1
+html2text==3.200.3
+lxml==2.3.4
+paramiko==1.7.7.1
+pycrypto==2.5
+python-dateutil==2.1
+requests==0.11.1
+six==1.1.0
+wsgiref==0.1.2

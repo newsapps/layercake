@@ -1,0 +1,44 @@
+<VirtualHost *:80>
+ServerName layercake.tribapps.com
+ServerAlias www.layercake.tribapps.com
+
+    SetEnv DEPLOYMENT_TARGET production
+
+    SetEnvIf X-Forwarded-For "^163\.192\..*\..*" trib
+    <Location />
+       Order Deny,Allow
+       Allow from all
+    </Location>
+
+    <Directory  /home/newsapps/sites/layercake/repository/app>
+      AuthType Basic
+      AuthName "Authorized Access Only"
+      AuthUserFile /mnt/apps/passwords
+      Require valid-user
+    </Directory>
+    
+    Redirect permanent /favicon.ico http://media.apps.chicagotribune.com/favicon.ico
+
+    WSGIScriptAlias / /home/newsapps/sites/layercake/repository/app/production.wsgi
+    
+    Redirect permanent /favicon.ico http://media.apps.chicagotribune.com/favicon.ico
+
+    ErrorLog /home/newsapps/logs/layercake.error.log
+    LogLevel warn
+
+    SetEnvIf X-Forwarded-For "^.*\..*\..*\..*" is-forwarder
+    LogFormat "%{X-Forwarded-For}i %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O" combinedio
+    LogFormat "[%h] %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O" combinedio2
+    CustomLog /home/newsapps/logs/layercake.access.log combinedio env=is-forwarder
+    CustomLog /home/newsapps/logs/layercake.access.log combinedio2 env=!is-forwarder
+
+    ServerSignature Off
+    
+    RewriteEngine on
+    # canonical hostname
+    RewriteCond %{HTTP_HOST} ^www.layercake.chicagotribune.com [NC] 
+    RewriteRule ^/(.*)  http://layercake.tribapps.com/$1 [L,R]
+    
+    RewriteCond %{REQUEST_URI} /maintenance.html$ 
+    RewriteRule $ / [R=302,L]
+</VirtualHost>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Layercake preview: {{ content.title }}</title>
+
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css" />
+    <link href="http://chicagotribune.com/hive/stylesheets/reset.css" media="all" rel="stylesheet" type="text/css" />
+	<link href="http://chicagotribune.com/hive/stylesheets/content.css" media="all" rel="stylesheet" type="text/css" />
+	<link href="http://chicagotribune.com/hive/stylesheets/footer.css" media="all" rel="stylesheet" type="text/css" />
+	<link href="http://chicagotribune.com/hive/stylesheets/header.css" media="all" rel="stylesheet" type="text/css" />
+	<link href="http://chicagotribune.com/hive/stylesheets/common.css" media="all" rel="stylesheet" type="text/css" />
+	<link href="http://chicagotribune.com/hive/stylesheets/structure.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="http://chicagotribune.com/hive/stylesheets/adv_search.css" media="all" rel="stylesheet" type="text/css">
+    <link href="http://chicagotribune.com/hive/stylesheets/tugs.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="http://chicagotribune.com/hive/stylesheets/ssor.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="http://chicagotribune.com/stylesheets/market.css" media="all" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="/static/css/layercake-edit.css" />
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="content" class="article">
+    <h1>{{ content.title }}</h1>
+    <div id="story-body" class="articlebody">
+        <span class="toolSet" style="width: 369px;">
+            <div class="byline">
+                {% if content.byline %}
+                <span class="byline bordered">{{ content.byline }}</span>
+                {% endif %}
+                {% if content.titleline %}
+                <span class="titleline">{{ content.titleline }}</span>
+                {% endif %}
+                {% if content.dateline %}
+                <p class="date">{{ content.dateline }}</p>
+                {% endif %}
+            </div>
+            <div class="clear"></div>
+        </span>
+
+        <div id="story-body-text">
+            {{ content.body|safe }}
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    var count = 0;        
+    $('.layercake-item').each(function(i) {
+        var item = this;
+        $('<a class="edit btn btn-primary"><i class="icon-cog icon-white"></i> Edit</a>')
+        .insertBefore( $(this).find('.headline') )
+        .click( function() {
+            parent.$('#preview').trigger('editlayercake', item.id);
+            return false;
+        });
+        count += 1;
+    });
+    if (!count) {
+        $('<div id="empty-notice">&larr; You haven\'t added any updates yet. Start adding them in the left-hand pane.</div>').appendTo('#layercake-items');
+    }
+});
+</script>
+
+</body>
+</html>

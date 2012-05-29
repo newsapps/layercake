@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Hey!{% endblock title %}
+{% block creamyfilling %}
+<div class="container">
+    <div class="row-fluid" id="header">
+        <div class="span1">&nbsp;</div>
+        <div id="admin-front" class="span10">
+            <div class="hero-unit">
+                <h1>Start a layer cake story</h1>
+                <p>To start a new layer cake story, enter the headline and click "Next step."</p>
+            </div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            {% endwith %}    
+            <form id="create_form" action="/create" method="post" accept-charset="utf-8" class="form-horizontal">
+                <fieldset>
+                    <div class="control-group">
+                        <label class="control-label" for="headline">Story headline</label>
+                        <div class="controls">
+                            <input type="text" name="headline" value="{{ headline|default() }}" id="headline" class='required input-xlarge'>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <input type="submit" class="btn btn-primary" value="Next step: Add to the story &raquo;"/>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+            <div class="page-header">
+                <h2>…or edit an existing layer cake story</h2>
+            </div>
+            <form id="edit_form" action="/edit" method="post" accept-charset="utf-8" class="form-horizontal">
+                <p>To edit an existing layer cake story, enter the slug and click "Edit the story."</p>
+                <fieldset>
+                    <div class="control-group">
+                        <label class="control-label" for="slug">Slug</label>
+                        <div class="controls">
+                            <input type="text" name="slug" value="" id="slug" class='required input-xlarge'>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <input type="submit" class="btn btn-primary" value="Edit the story &raquo;"/>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        
+        <div class="span1">&nbsp;</div>
+    </div>
+</div>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function(){
+        $("#create_form").validate({
+            submitHandler: function(form) {
+                $('<div class="modal-backdrop" />')
+                    .css('opacity', 0)
+                    .appendTo(document.body)
+                    .animate({'opacity' : 0.8})
+                    .spin({ lines: 12, length: 12, width: 5, radius: 14, color: '#ffffff' });
+                form.submit();
+            }
+        });
+        $("#edit_form").validate({
+            submitHandler: function(form) {
+                var url = "/edit/" + $("#slug").val();
+                window.location.href = url;
+                return false;
+            }
+        });
+        $("#headline").focus();
+    });
+</script>
+{% endblock creamyfilling %}

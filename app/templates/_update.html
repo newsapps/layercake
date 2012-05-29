@@ -1,0 +1,14 @@
+{% extends "_content_item.html" %}
+{% block update_specifics %}
+{% if photo_url %}
+<div class="photo-wrapper">
+    <img class='photo' src="{{ photo_url }}">
+    {% if caption %}<div class="caption">{{ caption|safe() }}</div>{% endif %}
+</div>{% endif %}
+<div class="update">
+    {{ body|safe }}
+</div>
+{% if source|default() %}
+<div class="source">{{ source }}</div>
+{% endif %}
+{% endblock update_specifics %}

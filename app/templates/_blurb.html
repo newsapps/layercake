@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ title }} (front page view)</title>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="../../bootstrap/css/bootstrap.min.css" />
+        <style type="text/css">
+            body { padding: 0; font-size: 14px; }
+
+            p { margin-bottom: 0; }
+
+            .widget { width: 340px; height: 175px; position: relative;overflow: hidden; }
+
+            a, a:hover { color: #262626; text-decoration: none; }
+
+            .more-wrapper { margin-left: 200px; }
+
+            h1 { font-size: 22px; line-height: 28px; font-family: Georgia,'Times New Roman',serif; font-weight: normal; margin-bottom: 6px; }
+
+            .date { font-size: 12px; color: #af0116; font-weight: normal; font-style: italic; margin-right: 4px; margin-bottom: 0; line-height: 18px; float: left; }
+
+            .more { font-weight: bold; margin-top:5px; }
+
+            .update-photo { background-color: #151515; }
+            .update-photo img { width: 340px; height: auto;; }
+            .update-photo .headline { background-color: rgba(15, 15, 15, 0.8); position: absolute; left: 0; bottom: 0; padding: 4px 10px 8px 10px; width: 320px; }
+            .update-photo h1 { font-size: 14px; line-height: 18px; color: #fff; font-weight: normal; margin-bottom: 0; font-family: Arial,Helvetica,sans-serif; }
+            .update-photo .date { color: #ff4a4a; }
+
+            .video-play-icon { width: 22px; height: 22px; display: inline-block; margin-bottom: -4px; background: url(http://media.apps.chicagotribune.com/layercake/img/play-button.png) no-repeat; }
+        </style>
+        <!--[if lt IE 9]>
+        <style type="text/css">
+            .update-photo .headline { background-color: rgb(15, 15, 15); }
+        </style>    
+        <![endif]-->
+    </head>
+    <body>
+        <div id="items-wrapper" data-url="{{ story_url }}">
+            <div id="items">
+                {% for blurb in blurbs %}
+                {{ blurb|safe }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <script>
+            function rotator() {
+                var widgets = $('.widget'),
+                    first = $(widgets.get(0)).clone(),
+                    height = widgets.height(),
+                    i = 0,
+                    j = 0;
+
+                // Update link addresses
+                $('a').attr('href', $('#items-wrapper').data('url'));
+
+                // Force scroll top
+                $('html, body').scrollTop(0);
+
+                widgets.last().after(first);
+
+                t = setInterval(function() {
+                    i += 1;
+                    var topPos = i * height;
+                    $('html, body').animate({scrollTop: topPos}, 500, function() {
+                        if ( i == widgets.length ) {
+                            if (j == 4) {
+                                $('#items-wrapper').load(window.location.href + ' #items', function(response) {
+                                    clearInterval(t)
+                                    rotator();
+                                });
+                            } else {
+                                i = -1;
+                                j += 1;
+                                $('html, body').animate({scrollTop: 0}, 1);
+                            }
+                        }
+                    });
+                }, 6000);
+            }
+            $(document).ready(rotator);
+        </script>
+
+    </body>
+</html>

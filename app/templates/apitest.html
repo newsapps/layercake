@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block creamyfilling %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="row">
+        <div class="span1">&nbsp;</div>
+        <div class="span11">
+            <ul class=flashes>
+            {% for category, message in messages %}
+              <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+  {% endif %}
+{% endwith %}    
+<div class="row">
+    <div class='span1'>&nbsp</div>
+    <div class='span11'>
+        <form action="/apitest" method="post" accept-charset="utf-8">
+            <label for="url">URL</label><input type="text" name="url" value="{{ url }}" id="url" style="width: 100%">
+            
+            <label for="authorization_header">Authorization Header</label><input type="text" name="authorization_header" value="{{ authorization_header }}" id="authorization_header" style="width: 100%">
+
+            <h1>JSON:</h1>
+            <textarea name="json" rows="20" cols="80">{{ json }}</textarea><br>
+
+            <p><input type="submit" value="Continue &rarr;"></p>
+        </form>        
+    </div>
+</div>
+
+{% endblock creamyfilling %}

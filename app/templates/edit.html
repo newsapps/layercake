@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+{% block title %}Editing '{{ title|default() }}'{% endblock title %}
+
+{% block scripts %}
+<script type="text/javascript" src="/static/js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="/static/js/ckeditor/adapters/jquery.js"></script>
+<!-- <script type="text/javascript" src="/static/js/jquery.ba-postmessage.js"></script> -->
+<script type="text/javascript" src="/static/js/editor.js"></script>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="/static/css/editor.css" />
+{% endblock %}
+{% block creamyfilling %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="flashes">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endwith %}    
+
+<div id="tools">
+    <div class="clearfix">
+        <div class="tool-block">
+            <i class="icon-cog"></i> <a data-toggle="modal" href="#edit-title">Edit the title &amp; topper</a>
+        </div>
+        <div class="tool-block">
+            <i class="icon-flag"></i> <a href="{{config.P2P_ROOT}}/content_items/edit/{{ id }}" target="_blank">Edit the story in P2P &raquo;</a>
+        </div>
+        <div class="tool-block right">
+            <i class="icon-question-sign"></i> <a data-toggle="modal" href="#modal-help">Need help?</a>
+        </div>
+    </div>
+</div>
+
+
+<div id="update-wrapper">
+    <div id="messages"></div>
+
+    <div id="update-form-wrapper"><div id="update-form">
+        {% if edit_id %}<h1>{{ edit_title|safe }}</h1>{% endif %}
+        {% if not edit_id %}
+        <ul id="nav-tabs" class="nav nav-tabs">
+            <li class="active"><a href="#update" data-toggle="tab">Text/Photo</a></li>
+            <li><a href="#video" data-toggle="tab">P2P Video</a></li>
+            <li><a href="#oembed" data-toggle="tab">Web Embed</a></li>
+            <li><a href="#tweet" data-toggle="tab">Tweet</a></li>
+        </ul>
+        {% endif %}
+        <div class="tab-content">
+            {% if not edit_id or active_tab == 'update' %}
+            <div id="update" class="tab-pane{% if active_tab == 'update' %} active{% endif %}">
+                <form id="edit-update" action="/update" method="post" accept-charset="utf-8">
+                    <input type="hidden" name="template" value="update">
+                    <input type="hidden" name="slug" value="{{ slug }}">
+                    <input type="hidden" name="edit_id" value="{{ edit_id }}">
+
+                    <label for="timestamp">Timestamp</label><input id="update-form-timestamp" type="datetime-local" name="timestamp" value="{{ timestamp }}" placeholder="AP style, please, like: “8:43 a.m.” or leave blank for auto"><br>
+                    <label for="headline">Headline</label><input id="update-form-headline" type="text" name="headline" value="{{ headline }}" class="required"><br>
+                    <label for="body">Body</label>
+                    <textarea class="editor" name="body" rows="8" cols="40">{{ update }}</textarea><br>
+
+                    <label for="source">Source (optional)</label><input type="text" name="source" value="{{ source }}" placeholder="e.g. AP, Reuters" id="source">
+                    <h2>Photo</h2>
+                    <label for="photo">Uploaded file (must be no more than 600px wide)</label>
+                    {% if photo_url %}<img class="photo" src="{{ photo_url }}" >
+                    {% endif %}
+                    <input type="hidden" name="photo_url" value="{{ photo_url|default() }}" id="photo_url">
+                    <input type="file" name="photo" value="" id="photo">
+                    {% if photo_url %}
+                    <p>(If you do not want to change this photo, ignore the "Choose File" button. If you upload a new photo, it will replace this one.)
+                    </p>
+                    {% endif %}
+                    <label for="caption">Caption</label>
+                    <textarea class="editor" name="caption" rows="8" cols="40">{{ caption }}</textarea><br>
+
+                    <div id="update-form-actions">
+                        {% if edit_id %}
+                        <button id="delete-update" type="submit" name="intention" value="delete" class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete update</button>
+                        <button id="cancel-update" name="intention" value="cancel" class="btn btn-warning"><i class="icon-ban-circle icon-white"></i> Cancel editing</button>
+                        <button id="edit-update" type="submit" name="intention" value="save" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Save update</button>
+                        {% else %}
+                        <button type="submit" name="intention" value="add" class="btn btn-primary"><i class="icon-plus-sign icon-white"></i> Add update</button>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+            {% if not edit_id or active_tab == 'video' %}
+            <div id="video" class="tab-pane{% if active_tab == 'video' %} active{% endif %}">
+                <form id="edit-video" action="/update" method="post" accept-charset="utf-8">
+                    <input type="hidden" name="template" value="video">
+                    <input type="hidden" name="slug" value="{{ slug }}">
+                    <input type="hidden" name="edit_id" value="{{ edit_id }}">
+                    <label for="timestamp">Timestamp</label><input type="datetime-local" name="timestamp" value="{{ timestamp }}" placeholder="AP style, please, like: “8:43 a.m.” or leave blank for auto"><br>
+                    <label for="headline">Headline</label><input type="text" name="headline" value="{{ headline }}"><br>
+                    <label for="video_id">Video P2P id or slug</label><input type="text" name="video_id" value="{{ video_id|default() }}" id="video_id" placeholder="e.g. 69890152 or chi-chicago-live-almanac-chicago-river-20120511">
+                    <label for="body">Body</label>
+                    <textarea class="editor" id="video-body" name="body" rows="8" cols="40">{{ update }}</textarea><br>
+
+                    <label for="source">Source (optional)</label><input type="text" name="source" value="{{ source }}" placeholder="e.g. AP, Reuters" id="source">
+                    <div id="video-form-actions">
+                        {% if edit_id %}
+                        <button id="delete-update" type="submit" name="intention" value="delete" class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete update</button>
+                        <button id="cancel-update" name="intention" value="cancel" class="btn btn-warning"><i class="icon-ban-circle icon-white"></i> Cancel editing</button>
+                        <button id="edit-update" type="submit" name="intention" value="save" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Save update</button>
+                        {% else %}
+                        <button type="submit" name="intention" value="add" class="btn btn-primary"><i class="icon-plus-sign icon-white"></i> Add update</button>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+            {% if not edit_id or active_tab == 'oembed' %}
+            <div id="oembed" class="tab-pane{% if active_tab == 'oembed' %} active{% endif %}">
+                <form id="edit-oembed" action="/update" method="post" accept-charset="utf-8">
+                    <input type="hidden" name="template" value="oembed">
+                    <input type="hidden" name="slug" value="{{ slug }}">
+                    <input type="hidden" name="edit_id" value="{{ edit_id }}">
+                    <label for="timestamp">Timestamp</label><input type="datetime-local" name="timestamp" value="{{ timestamp }}" placeholder="AP style, please, like: “8:43 a.m.” or leave blank for auto"><br>
+                    <label for="headline">Headline</label><input type="text" name="headline" value="{{ headline }}"><br>
+                    <label for="oembed_url">Source URL (YouTube, Google Map, <a href="http://embed.ly/providers" target="_blank">many others</a>)</label><input type="url" name="oembed_url" value="{{ oembed_url|default() }}" id="oembed_url" placeholder="e.g. http://www.youtube.com/watch?v=txqiwrbYGrs">
+                    <label for="body">Body</label>
+                    <textarea class="editor" id="oembed-body" name="body" rows="8" cols="40">{{ update }}</textarea><br>
+                    <div id="oembed-form-actions">
+                        {% if edit_id %}
+                        <button id="delete-update" type="submit" name="intention" value="delete" class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete update</button>
+                        <button id="cancel-update" name="intention" value="cancel" class="btn btn-warning"><i class="icon-ban-circle icon-white"></i> Cancel editing</button>
+                        <button id="edit-update" type="submit" name="intention" value="save" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Save update</button>
+                        {% else %}
+                        <button type="submit" name="intention" value="add" class="btn btn-primary"><i class="icon-plus-sign icon-white"></i> Add update</button>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+            {% endif %}            {% if not edit_id or active_tab == 'tweet' %}
+            <div id="tweet" class="tab-pane{% if active_tab == 'tweet' %} active{% endif %}">
+                <form id="edit-tweet" action="/update" method="post" accept-charset="utf-8">
+                    <input type="hidden" name="template" value="tweet">
+                    <input type="hidden" name="slug" value="{{ slug }}">
+                    <input type="hidden" name="edit_id" value="{{ edit_id }}">
+                    <label for="timestamp">Timestamp</label><input type="datetime-local" name="timestamp" value="{{ timestamp }}" placeholder="AP style, please, like: “8:43 a.m.” or leave blank for auto"><br>
+                    <label for="headline">Headline</label><input type="text" name="headline" value="{{ headline }}"><br>
+                    <label for="tweet_url">Tweet URL</label><input type="url" name="tweet_url" value="{{ tweet_url|default() }}" id="tweet_url" placeholder="e.g. https://twitter.com/#!/ColonelTribune/status/195868419579588610">
+                    <label for="body">Body</label>
+                    <textarea class="editor" id="tweet-body" name="body" rows="8" cols="40">{{ update }}</textarea><br>
+                    <div id="tweet-form-actions">
+                        {% if edit_id %}
+                        <button id="delete-update" type="submit" name="intention" value="delete" class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete update</button>
+                        <button id="cancel-update" name="intention" value="cancel" class="btn btn-warning"><i class="icon-ban-circle icon-white"></i> Cancel editing</button>
+                        <button id="edit-update" type="submit" name="intention" value="save" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Save update</button>
+                        {% else %}
+                        <button type="submit" name="intention" value="add" class="btn btn-primary"><i class="icon-plus-sign icon-white"></i> Add update</button>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div></div>
+
+</div>
+
+<div id="preview-wrapper">
+    <div id="preview-frame">
+        <h1>Preview</h1>
+        <iframe id="preview" src="/preview/{{ slug }}" frameBorder="0" border="0"></iframe>
+    </div>
+</div>
+
+<div class="modal hide" id="edit-title">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">×</button>
+        <h3>Edit Title &amp; Topper</h3>
+    </div>
+    <div class="modal-body">
+    <form id="edit-meta" action="/update" method="post" accept-charset="utf-8">
+        <input type="hidden" name="template" value="meta">
+        <input type="hidden" name="slug" value="{{ slug }}">
+        <label for="title">Title</label><input type="text" name="title" value="{{ title }}"><br>
+        <label for="topper">Topper</label>
+        <textarea class="editor" name="topper" rows="8" cols="40">{{ topper }}</textarea><br>
+        <label for="story_url">Story URL</label><input type="text" name="story_url" value="{{ story_url }}" placeholder="e.g. http://www.chicagotribune.com/news/local/breaking/chinews-may-day-blog-protesters-mar-20120501,0,6941017.htmlstory"><br>
+        <div class="muted">Once the story is published to the world, you can put the URL here. Only required when this layercake is also on the front page.</div>
+    </div>
+    <div class="modal-footer">
+        <button id="cancel-update-topper" type="button" class="btn btn-warning"><i class="icon-ban-circle icon-white"></i> Cancel editing</button>
+        <button id="edit-update" type="submit" name="intention" value="save" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Save update</button>
+    </div>
+    </form>
+</div>
+<div class="modal hide" id="modal-help">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">×</button>
+        <h3>The layercake editor</h3>
+    </div>
+    <div class="modal-body">
+        <p>This machine creates live blog posts for the Chicago Tribune.</p>
+        <p>Add updates, tweets, and videos in the left-hand pane. The headline and time fields will be used as section headers in the story.</p>
+        <p>See a live preview of your story and edit existing updates in the right-hand pane.</p>
+        <p>To set a thumbnail, add SEO fields, and to generate a URL for publication, <a href="{{config.P2P_ROOT}}/content_items/edit/{{ id }}" target="_blank">edit the story in P2P</a>.</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Get busy editing!</a>
+    </div>
+</div>
+{% if brand_new %}
+<script>
+$(document).ready(function() {
+    $('#modal-help').modal();
+});
+</script>
+{% endif %}
+
+{% endblock %}

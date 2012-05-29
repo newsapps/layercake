@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block creamyfilling %}
+<div class="container">
+    <div class="bookmarklet">
+        <h1>Layercake bookmarklet</h1>
+        <p><strong>Help and explanation (TK)</strong> Veggies sunt bona vobis, proinde vos postulo esse magis gram pea swiss chard sierra leone bologi chicory cauliflower watercress salad eggplant leek radicchio green bean garbanzo courgette.</p>
+        <p>Drag to your bookmark bar:
+        <a class="btn" href="javascript:(function () {var script = document.getElementById('layercake-loader'); window.layercake = { 'baseURL' : 'http://{{ host}}' }; if (!script) { var script = document.createElement('script'); script.setAttribute('id', 'layercake-loader'); script.src = 'http://{{ host }}/static/bookmarklet/load.js'; document.body.appendChild(script); script.onload = function(e) { toggle_iframe(); }; } else { toggle_iframe(); } })()">Trib Apps: Edit post</a>
+        </p>
+    </div>
+</div>
+
+{% endblock creamyfilling %}

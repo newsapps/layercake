@@ -1,0 +1,38 @@
+<VirtualHost *:80>
+    ServerName layercake.beta.tribapps.com
+    ServerAlias www.layercake.beta.tribapps.com
+
+    SetEnv DEPLOYMENT_TARGET staging
+ 
+    <Location />
+       Order Deny,Allow
+       Allow from all
+    </Location>
+
+    <Directory  /home/newsapps/sites/layercake/repository/app>
+      AuthType Basic
+      AuthName "Authorized Access Only"
+      AuthUserFile /etc/apache2/passwords
+      Require valid-user
+    </Directory>
+
+    WSGIScriptAlias / /home/newsapps/sites/layercake/repository/app/staging.wsgi
+    
+    Redirect permanent /favicon.ico http://media-beta.tribapps.com/favicon.ico
+    
+    ErrorLog /home/newsapps/logs/layercake.error.log
+    LogLevel warn
+
+    CustomLog /home/newsapps/logs/layercake.access.log combined
+    
+    ServerSignature Off
+    
+    RewriteEngine on
+
+    # canonical hostname
+    RewriteCond %{HTTP_HOST} ^www.layercake.beta.tribapps.com [NC] 
+    RewriteRule ^/(.*)  http://layercake.beta.tribapps.com/$1 [L,R]
+    
+    RewriteCond %{REQUEST_URI} /maintenance.html$ 
+    RewriteRule $ / [R=302,L]
+</VirtualHost>

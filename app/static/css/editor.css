@@ -1,0 +1,47 @@
+body { padding: 10px 20px; background-color: #ddd; }
+
+input, textarea { width: 95%; }
+
+h1 { font-size: 20px; }
+
+#nav-tabs { margin-top: 10px; }
+
+#nav-tabs li a { font-size: 13px; line-height: 13px; padding-left: 8px; padding-right: 8px; }
+
+#update-wrapper { float: left; width: 470px; } /* position: fixed; max-height: 95%; }*/
+
+#update-form-wrapper, .message, #tools { border: 1px solid #aaa; background-color: #fff; -webkit-box-shadow: 2px 2px 4px #999; -moz-box-shadow: 2px 2px 4px #999; box-shadow: 2px 2px 4px #999; }
+
+.message { margin-bottom: 10px; }
+
+#tools { margin-bottom: 10px; width: 1118px; }
+
+#update-form-wrapper { overflow-y: auto; overflow-x: hidden; }
+
+#update-form-wrapper h2 { font-size: 14px;}
+
+#update-form, #tools, .message { padding: 5px 15px; }
+
+#update-form-actions { text-align: right; }
+
+#preview-wrapper { margin-left: 480px; width: 670px; }
+
+#preview-frame { padding: 5px 10px; border: 1px solid #aaa;  background-color: #fff; -webkit-box-shadow: 2px 2px 4px #999; -moz-box-shadow: 2px 2px 4px #999; box-shadow: 2px 2px 4px #999; }
+
+#preview-frame iframe { width: 650px; height: 400px; }
+
+#messages .message { margin-bottom: 10px; padding: 5px 10px; border: 1px solid #aaa; background-color: #fff; -webkit-box-shadow: 2px 2px 4px #999; -moz-box-shadow: 2px 2px 4px #999; box-shadow: 2px 2px 4px #999; }
+
+#messages .error { background-color: #FFC4C4; color: #900; }
+
+#messages, #tools a { font-weight: bold; }
+#messages, #messages p, #tools, #tools p { font-size: 15px; line-height: 25px; }
+
+#tools .tool-block { float: left; width: 199px; }
+#tools .tool-block.right { float: right; text-align: right;}
+
+#update-form img.photo { max-width: 150px; }
+
+.cke_skin_kama { padding: 0 !important; }
+
+#cke_body .cke_wrapper { background: transparent !important; background-color: #eee !important; }

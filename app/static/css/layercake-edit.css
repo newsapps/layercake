@@ -1,0 +1,23 @@
+.btn {
+    padding: 1px 5px;
+}
+
+.layercake-item a.edit {
+    margin-right: 10px;
+    margin-top: -7px;
+}
+
+#story-body p {
+    font-family: Georgia, 'Times New Roman', Serif;
+    font-size: 15px;
+    line-height: 19px;
+}
+
+#empty-notice {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 24px;
+    line-height: 36px;
+    margin-top: 36px;
+    color: #999;
+    text-align: center;
+}

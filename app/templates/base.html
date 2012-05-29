@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock title %} -- The Layercake Rig -- Chicago Tribune</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.form.js"></script>
+    <script type="text/javascript" src="/static/js/spin.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.spin.js"></script>
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap-tab.js"></script>
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap-modal.js"></script>
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap-typeahead.js"></script>
+    {% block scripts %}{% endblock %}
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css" />
+    {% block css %}
+    <link rel="stylesheet" type="text/css" href="/static/css/admin.css" />
+    {% endblock css %}
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+</head>
+<body>
+    {% block creamyfilling %}{% endblock creamyfilling %}
+</body>
+</html>

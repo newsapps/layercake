@@ -1,0 +1,22 @@
+{% if photo_url %}
+{# do the photo version #}
+<div class="widget update-photo">
+    <a href="http://chicagotribune.com" target="_parent">
+        <img src="{{ photo_url }}" />
+        <div class="headline clearfix">
+            <div class="date">{{ timestamp }}</div>
+            <h1>{{ headline }}</h1>
+        </div>
+    </a>
+</div>
+{% else %}
+{# do the text-only version #}
+<div class="widget update-text">
+    <a href="http://chicagotribune.com" target="_parent">
+        <h1>{{ headline }}</h1>
+        <div class="date">{{ timestamp }}</div>
+        {{ update|safe }}
+        <p class="more">Read more and follow live updates &raquo;</p>
+    </a>
+</div>
+{% endif %}

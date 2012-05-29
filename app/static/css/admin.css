@@ -1,0 +1,4 @@
+ul.flashes { list-style: none;}
+ul.flashes li { margin-left: -25px;}
+ul.flashes li.error { color: red;}
+

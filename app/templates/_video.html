@@ -1,0 +1,37 @@
+{% extends "_content_item.html" %}
+{% block update_specifics %}
+<div class="video" data-video-id="{{ video.id }}">
+    <object id='myExperience{{ video.id }}' class='BrightcoveExperience'>
+     <param name='bgcolor' value='#FFFFFF' />
+     <param name='wmode' value='transparent' />
+     <param name='autoStart' value='false' />
+     <param name='sectionName' value ='/' />
+     <param name='contentItemType' value ='embed' />
+     <param name='omnitureServer' value='www.chicagotribune.com' />
+     <param name='omnitureAcct' value='tribglobal' />
+     <param name='width' value='600' />
+     <param name='height' value='360' />
+     <param name='playerID' value='782523707001' />
+     <param name='playerKey' value='AQ~~,AAAAtkVbcwk~,5Rx45u37p7At4uUFYYBfI0whp8ObLWHD' />
+     <param name='adServerURL' value='http://ad.doubleclick.net/pfadx/trb.chicagotribune/hp' />
+     <param name='additionalAdTargetingParams' value=';player=bc;pos=pre;vc={{ video.classification }};clip={{ video.id }};sz=3x3;tile=13;ord=2101729012' />
+     <param name='externalAds' value='true' />
+     <param name='linkBaseURL' value='http://www.chicagotribune.com/videogallery/{{ video.id }}/{{ video.classification }}' />
+     <param name='isVid' value='true' />
+     <param name='isUI' value='true' />
+     <param name='dynamicStreaming' value='true' />
+     <param name='showNoContentMessage' value='true' />
+
+     <param name='@videoPlayer' value='ref:{{ video.id }}' />
+    </object>
+
+    <script type='text/javascript'>brightcove.createExperiences();</script>
+    {% if body %}
+    <div class="update">
+        {{ body|safe }}
+    </div>
+    {% endif %}
+{% if source|default() %}
+<div class="source">{{ source }}</div>
+{% endif %}
+{% endblock update_specifics %}

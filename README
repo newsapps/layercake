@@ -1,0 +1,5 @@
+This is a python-flask application which manages live-blog style stories in Tribune Co's content management system. If you don't have access to a Tribune Co CMS, you are not likely to get much use out of this, but feel free to peek at the code. This should be seen as a snapshot of work-in-progress, and not necessarily a perfect example of best-practices for development.
+
+Read http://blog.apps.chicagotribune.com/2012/05/29/covering-the-nato-summit/ for some more about this and a related tool.
+
+See LICENSE for license information.

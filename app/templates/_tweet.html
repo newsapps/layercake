@@ -1,0 +1,11 @@
+{% extends "_content_item.html" %}
+{% block update_specifics %}
+<div class="tweet" data-url="{{ tweet_url }}">
+    {{ embed|safe }}
+</div>
+{% if body %}
+<div class="update">
+    {{ body|safe }}
+</div>
+{% endif %}
+{% endblock update_specifics %}
